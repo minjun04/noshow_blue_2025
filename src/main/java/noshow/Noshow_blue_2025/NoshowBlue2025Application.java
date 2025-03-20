@@ -8,7 +8,6 @@ public class NoshowBlue2025Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(NoshowBlue2025Application.class, args);
-
 	}
 
 }
