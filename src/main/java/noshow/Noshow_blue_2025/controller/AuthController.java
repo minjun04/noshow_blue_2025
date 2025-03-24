@@ -13,13 +13,13 @@ public class AuthController {
     private final AuthService authService;
 
     // 회원가입
-    @PostMapping("/auth/students")
+    @PostMapping("/students")
     public AuthLoginResponse signUp(@RequestBody AuthSignUpRequest request) {
         return authService.signUp(request);
     }
 
     // 로그인
-    @PostMapping("/auth/students/login")
+    @PostMapping("/students/login")
     public AuthLoginResponse login(@RequestBody AuthLoginRequest request) {
         return authService.login(request);
     }
