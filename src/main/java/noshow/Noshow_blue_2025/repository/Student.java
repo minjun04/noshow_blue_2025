@@ -13,9 +13,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Student {
     @Id
-    @Column(name="student_id",nullable = false)
-    private String name;
+    @Column(name="studentId",nullable = false)
     private String studentId;
+    private String name;
     private String email;
     private String password;
 
