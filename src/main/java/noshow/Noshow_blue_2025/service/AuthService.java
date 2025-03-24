@@ -15,7 +15,7 @@ public class AuthService {
     //회원가입
     public AuthLoginResponse signUp(AuthSignUpRequest request) {
         if (studentRepository.findByEmail(request.getEmail()) != null) {
-            throw new IllegalArgumentException("이미 존재하는 아이디입니다.");
+            throw new IllegalArgumentException("이미 존재하는 회원입니다.");
         }
 
         Student student = Student.builder()
