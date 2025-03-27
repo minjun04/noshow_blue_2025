@@ -7,12 +7,12 @@ import lombok.Data;
 @Data
 @Builder
 public class AuthLoginResponse {
-    private String studentId;
+    private String Email;
     private String name;
 
     public static AuthLoginResponse from(Student student) {
         return AuthLoginResponse.builder()
-                .studentId(student.getStudentId())
+                .Email(student.getEmail())
                 .name(student.getName())
                 .build();
     }
