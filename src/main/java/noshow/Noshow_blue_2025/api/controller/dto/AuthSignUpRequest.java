@@ -1,4 +1,4 @@
-package noshow.Noshow_blue_2025.controller.dto;
+package noshow.Noshow_blue_2025.api.controller.dto;
 
 import java.time.LocalDate;
 import lombok.Data;
