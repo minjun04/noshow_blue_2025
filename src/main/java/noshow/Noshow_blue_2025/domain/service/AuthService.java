@@ -1,10 +1,11 @@
-package noshow.Noshow_blue_2025.service;
+package noshow.Noshow_blue_2025.domain.service;
 
-import noshow.Noshow_blue_2025.controller.dto.*;
-import noshow.Noshow_blue_2025.repository.Student;
-import noshow.Noshow_blue_2025.repository.StudentRepository;
+import noshow.Noshow_blue_2025.api.controller.dto.AuthLoginRequest;
+import noshow.Noshow_blue_2025.api.controller.dto.AuthLoginResponse;
+import noshow.Noshow_blue_2025.api.controller.dto.AuthSignUpRequest;
+import noshow.Noshow_blue_2025.infra.entity.Student;
+import noshow.Noshow_blue_2025.domain.repositoryInterface.StudentRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

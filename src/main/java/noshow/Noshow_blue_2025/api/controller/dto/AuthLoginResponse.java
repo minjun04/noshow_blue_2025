@@ -1,6 +1,6 @@
-package noshow.Noshow_blue_2025.controller.dto;
+package noshow.Noshow_blue_2025.api.controller.dto;
 
-import noshow.Noshow_blue_2025.repository.Student;
+import noshow.Noshow_blue_2025.infra.entity.Student;
 import lombok.Builder;
 import lombok.Data;
 
