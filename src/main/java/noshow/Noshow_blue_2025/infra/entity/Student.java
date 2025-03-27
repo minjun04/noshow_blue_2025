@@ -1,12 +1,10 @@
-package noshow.Noshow_blue_2025.repository;
+package noshow.Noshow_blue_2025.infra.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Getter
 @Entity
