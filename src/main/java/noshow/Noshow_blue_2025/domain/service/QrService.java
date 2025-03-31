@@ -1,8 +1,8 @@
 package noshow.Noshow_blue_2025.domain.service;
 
 import lombok.RequiredArgsConstructor;
-import noshow.Noshow_blue_2025.api.controller.dto.QrVerifyRequest;
-import noshow.Noshow_blue_2025.api.controller.dto.QrVerifyResponse;
+import noshow.Noshow_blue_2025.api.controller.dto.Qr.QrVerifyRequest;
+import noshow.Noshow_blue_2025.api.controller.dto.Qr.QrVerifyResponse;
 import noshow.Noshow_blue_2025.domain.repositoryInterface.StudentRepository;
 import noshow.Noshow_blue_2025.infra.entity.Student;
 import org.springframework.http.HttpStatus;
