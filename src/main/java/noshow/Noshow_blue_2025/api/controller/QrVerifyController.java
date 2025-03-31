@@ -2,8 +2,8 @@ package noshow.Noshow_blue_2025.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import noshow.Noshow_blue_2025.domain.service.QrService;
-import noshow.Noshow_blue_2025.api.controller.dto.QrVerifyResponse;
-import noshow.Noshow_blue_2025.api.controller.dto.QrVerifyRequest;
+import noshow.Noshow_blue_2025.api.controller.dto.Qr.QrVerifyResponse;
+import noshow.Noshow_blue_2025.api.controller.dto.Qr.QrVerifyRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
