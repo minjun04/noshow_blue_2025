@@ -4,8 +4,6 @@ import noshow.Noshow_blue_2025.api.controller.dto.AuthLoginRequest;
 import noshow.Noshow_blue_2025.api.controller.dto.AuthLoginResponse;
 import noshow.Noshow_blue_2025.api.controller.dto.AuthSignUpRequest;
 import noshow.Noshow_blue_2025.domain.service.AuthService;
-import noshow.Noshow_blue_2025.domain.service.*;
-import noshow.Noshow_blue_2025.api.controller.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +24,4 @@ public class AuthController {
     public AuthLoginResponse login(@RequestBody AuthLoginRequest request) {
         return authService.login(request);
     }
-
-
 }
