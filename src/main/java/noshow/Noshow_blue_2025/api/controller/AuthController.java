@@ -2,8 +2,6 @@ package noshow.Noshow_blue_2025.api.controller;
 
 import noshow.Noshow_blue_2025.domain.service.AuthService;
 import lombok.RequiredArgsConstructor;
-import noshow.Noshow_blue_2025.infra.entity.Student;
-import noshow.Noshow_blue_2025.domain.repositoryInterface.StudentRepository;
 import org.springframework.web.bind.annotation.*;
 import  org.springframework.ui.Model;
 import  org.springframework.security.oauth2.core.user.OAuth2User;
