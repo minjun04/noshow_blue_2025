@@ -15,11 +15,15 @@ public class Student {
     private String studentId;
     private String name;
     private String email;
+    private String seatId;
+    private Boolean entry;
 
     @Builder
-    private Student(String name, String email, String studentId) {
+    private Student(String name, String email, String studentId, String seatId, Boolean entry) {
         this.name = name;
         this.email = email;
         this.studentId = studentId;
+        this.seatId = seatId;
+        this.entry = entry;
     }
 }
