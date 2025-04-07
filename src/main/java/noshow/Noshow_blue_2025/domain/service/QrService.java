@@ -21,7 +21,7 @@ public class QrService {
     // DB에서 학번 및 이름 으로 학생 조회
     public ResponseEntity<QrVerifyResponse> verifyStudent(@RequestBody QrVerifyRequest qrRequest) {
 
-        Student student = studentRepository.findByIdAndName(qrRequest.getStudentId(),qrRequest.getName());
+        Student student = studentRepository.findByStudentIdAndName(qrRequest.getStudentId(),qrRequest.getName());
 
         if (student!=null && student.getName().equals(qrRequest.getName())&&student.getStudentId().equals(qrRequest.getStudentId())) {
             return ResponseEntity.ok(QrVerifyResponse.from(student)); //확인완료

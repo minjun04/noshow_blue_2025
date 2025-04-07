@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class AuthService {
+public class OAuthService {
     private final StudentRepository studentRepository;
-
 
     //로그인
     public AuthLoginResponse login(AuthLoginRequest request) {
@@ -18,7 +17,6 @@ public class AuthService {
                 request.getEmail());
         System.out.println("로인성공");
         if (student == null) {
-            System.out.println("일치 없음");
             throw new IllegalArgumentException("일치하는 회원이 없습니다.");
         }
 
