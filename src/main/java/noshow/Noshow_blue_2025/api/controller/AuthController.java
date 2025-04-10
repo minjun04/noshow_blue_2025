@@ -1,6 +1,7 @@
 package noshow.Noshow_blue_2025.api.controller;
 
-import noshow.Noshow_blue_2025.api.controller.dto.*;
+import noshow.Noshow_blue_2025.api.controller.dto.Auth.AuthLoginRequest;
+import noshow.Noshow_blue_2025.api.controller.dto.Auth.AuthLoginResponse;
 import noshow.Noshow_blue_2025.domain.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
