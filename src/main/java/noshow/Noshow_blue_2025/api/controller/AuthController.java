@@ -15,7 +15,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthLoginRequest loginRequest) {
-        return authService.login(loginRequest);  // 모든 처리를 Service에서
+        return authService.login(loginRequest);
     }
 
     @PostMapping("/signup")

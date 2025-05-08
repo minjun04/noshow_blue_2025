@@ -1,7 +1,11 @@
 package noshow.Noshow_blue_2025.domain.service.Auth;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import noshow.Noshow_blue_2025.api.controller.dto.Auth.AuthLoginRequest;
 import noshow.Noshow_blue_2025.api.controller.dto.Auth.AuthLoginResponse;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import noshow.Noshow_blue_2025.api.controller.dto.Auth.AuthSignUpRequest;
 import noshow.Noshow_blue_2025.infra.entity.Student;
 import noshow.Noshow_blue_2025.domain.repositoryInterface.StudentRepository;
@@ -10,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.Map;
 
 @RestController
@@ -20,16 +25,42 @@ public class AuthService {
 
     //로그인
     public ResponseEntity<?> login(AuthLoginRequest request) {
-        Student student = studentRepository.findByEmail(request.getEmail());
+        String idTokenString = request.getIdToken();
+        try {
+            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
+                    GoogleNetHttpTransport.newTrustedTransport(),
+                    JacksonFactory.getDefaultInstance()
+            )
+                    .setAudience(Collections.singletonList("354675947931-651m2sulv6s8kik4injhdod2bq2h0vt0.apps.googleusercontent.com")) //
+                    .build();
 
-        if (student == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    Map.of("success", false, "reason", "USER_NOT_FOUND")
+            GoogleIdToken idToken = verifier.verify(idTokenString);
+
+            if (idToken == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                        Map.of("success", false, "reason", "INVALID_ID_TOKEN")
+                );
+            }
+
+            String email = idToken.getPayload().getEmail(); // ✅ 구글 계정 이메일 추출
+            Student student = studentRepository.findByEmail(email);
+
+            if (student == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                        Map.of("success", false, "reason", "USER_NOT_FOUND")
+                );
+            }
+
+            String token = jwtTokenProvider.generateToken(student.getEmail());
+
+            return ResponseEntity.ok(new AuthLoginResponse(token));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    Map.of("success", false, "reason", "SERVER_ERROR")
             );
         }
-        // 실제 로그인 처리: 예) 토큰 생성, DTO 반환
-        String token = jwtTokenProvider.generateToken(student.getEmail());
-        return ResponseEntity.ok(new AuthLoginResponse(token));  // 200 OK with response body
     }
 
     //회원가입
