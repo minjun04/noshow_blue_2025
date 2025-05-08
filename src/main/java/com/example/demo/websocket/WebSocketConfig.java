@@ -1,6 +1,5 @@
 package com.example.demo.websocket;
 
-import noshow.Noshow_blue_2025.infra.MyWebSocketHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
