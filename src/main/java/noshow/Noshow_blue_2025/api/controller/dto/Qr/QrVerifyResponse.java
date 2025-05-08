@@ -11,11 +11,13 @@ import noshow.Noshow_blue_2025.infra.entity.Student;
 public class QrVerifyResponse {
     private String studentId;
     private String name;
+    private String email;
 
     public static QrVerifyResponse from(Student student) {
         return QrVerifyResponse.builder()
                 .name(student.getName())
                 .studentId(student.getStudentId())
+                .email(student.getEmail())
                 .build();
 
     }
