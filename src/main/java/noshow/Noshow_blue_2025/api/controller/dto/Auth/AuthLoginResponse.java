@@ -7,11 +7,9 @@ import lombok.Data;
 @Builder
 public class AuthLoginResponse {
     private String accessToken;
-    private String tokenType = "Bearer";  // 고정값
+    private final String tokenType = "Bearer";  // 고정값
 
     public AuthLoginResponse(String accessToken) {
         this.accessToken = accessToken;
     }
-
-    // getter/setter 생략
 }

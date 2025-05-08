@@ -1,0 +1,40 @@
+package noshow.Noshow_blue_2025.infra.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "seat")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Seat {
+
+    @Id
+    @Column(name="seatId",nullable = false)
+    private String seatId;
+
+    @Column(nullable = false)
+    private Boolean reserved;
+
+    @Column(nullable = false)
+    private Integer numOfExtensions;
+
+    @Column(nullable = false)
+    private Integer remainingBreakTime;
+
+    private LocalDateTime startOfBreakTime;
+
+    private LocalDateTime endOfBreakTime;
+
+    private LocalDateTime startOfReservation;
+
+    private LocalDateTime endOfReservation;
+
+    @ManyToOne
+    @JoinColumn(name = "seatId", referencedColumnName = "seatId", insertable = false, updatable = false,
+            foreignKey = @ForeignKey(name = "fk_seat_student", foreignKeyDefinition = "FOREIGN KEY (seatId) REFERENCES student(seatId) ON DELETE CASCADE"))
+    private Student student;  // seatId는 Student 테이블의 FK
+}
