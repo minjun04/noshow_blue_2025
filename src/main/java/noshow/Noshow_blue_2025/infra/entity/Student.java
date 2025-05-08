@@ -16,10 +16,10 @@ public class Student {
     private String name;
     private String email;
     private String seatId;
-    private Boolean entry;
+    private Integer entry;
 
     @Builder
-    private Student(String name, String email, String studentId, String seatId, Boolean entry) {
+    private Student(String name, String email, String studentId, String seatId, Integer entry) {
         this.name = name;
         this.email = email;
         this.studentId = studentId;

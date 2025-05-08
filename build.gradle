@@ -27,6 +27,7 @@ dependencies {
 	//qr코드 생성을 위한 의존성
 	implementation 'com.google.zxing:core:3.5.3'
 	implementation 'com.google.zxing:javase:3.5.3'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 	//implementation 'mysql:mysql-connector-java:8.0.40'
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'

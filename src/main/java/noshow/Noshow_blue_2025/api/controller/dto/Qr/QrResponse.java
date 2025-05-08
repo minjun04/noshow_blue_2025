@@ -8,13 +8,13 @@ import noshow.Noshow_blue_2025.infra.entity.Student;
 @Getter
 @Builder
 @AllArgsConstructor
-public class QrVerifyResponse {
+public class QrResponse {
     private String studentId;
     private String name;
     private String email;
 
-    public static QrVerifyResponse from(Student student) {
-        return QrVerifyResponse.builder()
+    public static QrResponse from(Student student) {
+        return QrResponse.builder()
                 .name(student.getName())
                 .studentId(student.getStudentId())
                 .email(student.getEmail())
