@@ -30,8 +30,10 @@ public class GpsService {
             return "사용자가 도서관 반경 안에 있습니다.";
         } else {
             // 예: 도서관 밖 → 자리 반납 또는 퇴실 처리
-            Student student = studentRepository.findById(String.valueOf(studentId))
-                    .orElseThrow(() -> new IllegalArgumentException("학생 없음"));
+            Student student = studentRepository.findByStudentId(studentId);
+            if (student == null) {
+                throw new IllegalArgumentException("학생 없음");
+            }
 
             student.setEntry(-1);
             return "사용자가 도서관 반경 밖입니다.";
