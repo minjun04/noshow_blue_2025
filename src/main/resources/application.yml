@@ -3,20 +3,20 @@ spring:
     name: Noshow_blue_2025
 
   datasource:
-    url: jdbc:mysql://localhost:3306/Noshow2025?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
-    username: Noshow2025
+    url: jdbc:mysql://localhost:3306/noshow2025?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
+    username: noshow2025
     password: 2025
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       connection-init-sql: SET NAMES utf8mb4
-jpa:
-    hibernate:
-      ddl-auto: update  # Entity 기반으로 table 생성
-    show-sql: true
-    properties:
+  jpa:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
+        ddl-auto: update  # Entity 기반으로 table 생성
+      show-sql: true
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQL8Dialect
+          format_sql: true
 jwt:
   secret: VGhpcy1pcy1hLXN1cGVyLXNlY3JldC1leGFtcGxlLWtleS1mb3ItSlc=
 
