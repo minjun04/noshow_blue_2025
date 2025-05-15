@@ -15,9 +15,11 @@ public class QrController {
     private final QrService qrService;
 
     @GetMapping("/info")
-    public ResponseEntity<?> getUserInfo(@RequestParam String email) {
+    public ResponseEntity<?> getUserInfoAndUpdateEntry(@RequestParam String email,
+                                                       @RequestParam int value) {
         try {
-            Student student = qrService.findStudentByEmail(email);
+            Student student = qrService.findAndUpdateEntryByEmail(email, value);
+
             return ResponseEntity.ok(new QrResponse(
                     student.getName(),
                     student.getStudentId(),
@@ -26,8 +28,6 @@ public class QrController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
         }
-
-
     }
 
 }
