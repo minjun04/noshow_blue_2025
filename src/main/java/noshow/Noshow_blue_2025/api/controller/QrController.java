@@ -1,6 +1,7 @@
 package noshow.Noshow_blue_2025.api.controller;
 
 import lombok.RequiredArgsConstructor;
+import noshow.Noshow_blue_2025.api.controller.dto.Qr.QrRequest;
 import noshow.Noshow_blue_2025.api.controller.dto.Qr.QrResponse;
 import noshow.Noshow_blue_2025.domain.service.QrService;
 import noshow.Noshow_blue_2025.infra.entity.Student;
@@ -14,11 +15,10 @@ import org.springframework.web.bind.annotation.*;
 public class QrController {
     private final QrService qrService;
 
-    @GetMapping("/info")
-    public ResponseEntity<?> getUserInfoAndUpdateEntry(@RequestParam String email,
-                                                       @RequestParam int value) {
+    @PostMapping("/info")
+    public ResponseEntity<?> getUserInfoAndUpdateEntry(@RequestBody QrRequest request) {
         try {
-            Student student = qrService.findAndUpdateEntryByEmail(email, value);
+            Student student = qrService.findAndUpdateEntryByEmail(request.getEmail(), request.getValue());
 
             return ResponseEntity.ok(new QrResponse(
                     student.getName(),
