@@ -10,24 +10,14 @@ import org.springframework.stereotype.Service;
 public class QrService {
     private final StudentRepository studentRepository;
 
-    // 이메일로 학생 찾기
-    public Student findStudentByEmail(String email) {
+    // 이메일로 학생 조회 + entry 값 변경
+    public Student findAndUpdateEntryByEmail(String email, int newEntryValue) {
         Student student = studentRepository.findByEmail(email);
         if (student == null) {
             throw new IllegalArgumentException("Student not found: " + email);
         }
-        return student;
-    }
-
-    // studentId로 entry 값 변경
-    public Student updateEntry(String studentId, int newEntryValue) {
-        Student student = studentRepository.findById(studentId).orElse(null);
-
-        if (student == null) {
-            throw new IllegalArgumentException("Student not found: " + studentId);
-        }
 
         student.setEntry(newEntryValue);
-        return studentRepository.save(student);  // 변경 후 저장
+        return studentRepository.save(student);  // entry 변경 후 저장
     }
 }

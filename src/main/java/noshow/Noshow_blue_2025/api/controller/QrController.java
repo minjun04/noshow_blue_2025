@@ -1,6 +1,7 @@
 package noshow.Noshow_blue_2025.api.controller;
 
 import lombok.RequiredArgsConstructor;
+import noshow.Noshow_blue_2025.api.controller.dto.Qr.QrRequest;
 import noshow.Noshow_blue_2025.api.controller.dto.Qr.QrResponse;
 import noshow.Noshow_blue_2025.domain.service.QrService;
 import noshow.Noshow_blue_2025.infra.entity.Student;
@@ -14,10 +15,11 @@ import org.springframework.web.bind.annotation.*;
 public class QrController {
     private final QrService qrService;
 
-    @GetMapping("/info")
-    public ResponseEntity<?> getUserInfo(@RequestParam String email) {
+    @PostMapping("/info")
+    public ResponseEntity<?> getUserInfoAndUpdateEntry(@RequestBody QrRequest request) {
         try {
-            Student student = qrService.findStudentByEmail(email);
+            Student student = qrService.findAndUpdateEntryByEmail(request.getEmail(), request.getValue());
+
             return ResponseEntity.ok(new QrResponse(
                     student.getName(),
                     student.getStudentId(),
@@ -26,8 +28,6 @@ public class QrController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
         }
-
-
     }
 
 }
