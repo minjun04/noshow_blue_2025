@@ -5,8 +5,10 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 public class Student {
@@ -15,15 +17,15 @@ public class Student {
     private String studentId;
     private String name;
     private String email;
-    private String password;
+    private String seatId;
+    private Integer entry;
 
     @Builder
-    private Student(String name, String email, String password, String studentId) {
+    private Student(String name, String email, String studentId, String seatId, Integer entry) {
         this.name = name;
         this.email = email;
-        this.password = password;
         this.studentId = studentId;
+        this.seatId = seatId;
+        this.entry = entry;
     }
-
 }
-

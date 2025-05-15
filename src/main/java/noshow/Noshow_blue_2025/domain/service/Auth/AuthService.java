@@ -42,11 +42,11 @@ public class AuthService {
                 );
             }
 
-            String email = idToken.getPayload().getEmail(); // ✅ 구글 계정 이메일 추출
+            String email = idToken.getPayload().getEmail(); // 구글 계정 이메일 추출
             Student student = studentRepository.findByEmail(email);
 
             if (student == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                return ResponseEntity.status(HttpStatus.OK).body(
                         Map.of("success", false, "reason", "USER_NOT_FOUND")
                 );
             }
