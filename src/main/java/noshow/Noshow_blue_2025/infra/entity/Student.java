@@ -29,7 +29,7 @@ public class Student {
         this.email = email;
         this.studentId = studentId;
         this.seatId = seatId;
-        this.entry = entry;
+        this.entry = entry; // -1: 외출, 0: 퇴장, 1: 입장
     }
 
 }
