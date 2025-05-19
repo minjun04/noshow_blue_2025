@@ -6,6 +6,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class SeatStatusResponse {
+    private String StudentId;
+    private String SeatId;
     private long remainingMinutes; // 남은 시간
     private int numOfExtensions;
 
