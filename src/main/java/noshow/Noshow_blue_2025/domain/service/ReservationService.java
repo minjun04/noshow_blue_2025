@@ -7,6 +7,7 @@ import noshow.Noshow_blue_2025.domain.repositoryInterface.SeatRepository;
 import noshow.Noshow_blue_2025.domain.repositoryInterface.StudentRepository;
 import noshow.Noshow_blue_2025.infra.entity.Seat;
 import noshow.Noshow_blue_2025.infra.entity.Student;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -63,33 +64,37 @@ public class ReservationService {
                 .orElseThrow(() -> new IllegalArgumentException("학생을 찾을 수 없습니다."));
         Seat seat = seatRepository.findBySeatId(student.getSeatId());
 
-        if (seat.getEndOfReservation() == null) return 0;
+        if (seat.getEndOfReservation() == null) {
+            return 0;
+        }
         return Duration.between(LocalDateTime.now(), seat.getEndOfReservation()).toMinutes();
     }
 
-    public SeatStatusResponse getSeatStatus(Student student) {
+    public ResponseEntity<?> getSeatStatus(Student student) {
+
+        if (student.getEntry()==0 || student.getSeatId() == null) {
+            // 좌석 ID가 없으면 즉시 204 No Content
+            return ResponseEntity.noContent().build();
+        }
         // 좌석 정보 조회
         Seat seat = seatRepository.findBySeatId(student.getSeatId());
 
-        // 좌석이 없으면 메시지 대신 null을 반환하거나 예외 처리
-        if (seat == null || seat.getSeatId() == null) {
-            // 필요 시 예외 던지거나 null 리턴 (컨트롤러에서 예외처리)
-            return new SeatStatusResponse(
-                    student.getStudentId(),
-                    null,
-                    0L,
-                    0
-            );
-        }
 
         long remainingMinutes = getRemainingMinutes(student.getStudentId());
 
-        return new SeatStatusResponse(
+        // 예약 시간 만료 후 퇴실 처리
+        if (remainingMinutes<=0){
+            ExitSeat(student.getStudentId());
+        }
+
+        SeatStatusResponse response = new SeatStatusResponse(
                 student.getStudentId(),
                 student.getSeatId(),
                 remainingMinutes,
                 seat.getNumOfExtensions()
         );
+
+        return ResponseEntity.ok(response);
     }
 
     @Transactional
@@ -107,8 +112,8 @@ public class ReservationService {
             seat.setReserved(false);
             seat.setStartOfReservation(null);
             seat.setEndOfReservation(null);
-            seat.setEndOfBreakTime(null);
             seat.setStartOfBreakTime(null);
+            seat.setEndOfBreakTime(null);
             seat.setNumOfExtensions(0);
             seatRepository.save(seat);
         }

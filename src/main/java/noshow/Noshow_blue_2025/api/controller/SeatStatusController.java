@@ -22,8 +22,8 @@ public class SeatStatusController {
     private final OtherUserSeatStatusService otherUserSeatStatusService;
 
     @GetMapping("/status")
-    public ResponseEntity<?> getSeatStatus(@AuthenticationPrincipal Student student) { //나의
-        SeatStatusResponse response = reservationService.getSeatStatus(student);
+    public ResponseEntity<?> getSeatStatus(@AuthenticationPrincipal Student student) { //나의 좌석 상태
+        ResponseEntity<?> response = reservationService.getSeatStatus(student);
         return ResponseEntity.ok(response);
     }
 
