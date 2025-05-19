@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Entity
@@ -19,6 +22,13 @@ public class Student {
     private String email;
     private String seatId;
     private Integer entry;
+    private Integer remainingBreakTime; // 분 단위, 초기값: 210
+    private LocalDateTime startOfBreakTime;
+
+    //예약
+    private LocalDateTime endOfReservation;
+    private LocalDateTime startOfReservation;
+    private int numOfExtensions; // 연장 횟수
 
     @Builder
     private Student(String name, String email, String studentId, String seatId, Integer entry) {
@@ -27,5 +37,11 @@ public class Student {
         this.studentId = studentId;
         this.seatId = seatId;
         this.entry = entry;
+    }
+
+    //남은 시간 계산
+    public long getRemainingMinutes() {
+        if (endOfReservation == null) return 0;
+        return Duration.between(LocalDateTime.now(), endOfReservation).toMinutes();
     }
 }
