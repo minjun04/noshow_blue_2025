@@ -68,6 +68,12 @@ public class QrService {
             student.setSeatId(null);
             student.setEntry(0);
             seat.setReserved(false); // 좌석 예약 해제
+            seat.setEndOfBreakTime(null);
+            seat.setEndOfReservation(null);
+            seat.setNumOfExtensions(0);
+            seat.setRemainingBreakTime(210);
+            seat.setStartOfBreakTime(null);
+            seat.setStartOfReservation(null);
 
             seatRepository.save(seat);
             studentRepository.save(student);
