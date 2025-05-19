@@ -32,6 +32,11 @@ public class ReservationService {
                 .orElseThrow(() -> new IllegalArgumentException("학생을 찾을 수 없습니다."));
         Seat seat = seatRepository.findBySeatId(student.getSeatId());
 
+        //만약 이미 예약한 좌석이 존재하면 null 처리
+        if(seat.getSeatId()!=null){
+            return false;
+        }
+
         seat.setSeatId(seatId);
         seat.setStartOfReservation(LocalDateTime.now());
         seat.setEndOfReservation(LocalDateTime.now().plus(BASE_DURATION));
@@ -79,11 +84,16 @@ public class ReservationService {
         // 좌석 정보 조회
         Seat seat = seatRepository.findBySeatId(student.getSeatId());
 
-
         long remainingMinutes = getRemainingMinutes(student.getStudentId());
 
-        // 예약 시간 만료 후 퇴실 처리
-        if (remainingMinutes<=0){
+        //예약시간 초과시 강제 퇴실
+        LocalDateTime now =LocalDateTime.now();
+        if(now.isAfter(seat.getEndOfReservation())){
+            ExitSeat(student.getStudentId());
+        }
+
+        //외출시간 초과시 강제퇴실
+        if(student.getEntry()==-1 && now.isAfter(seat.getEndOfBreakTime())){
             ExitSeat(student.getStudentId());
         }
 
