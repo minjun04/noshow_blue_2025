@@ -26,7 +26,7 @@ public class Seat {
     private Integer numOfExtensions;
 
     @Column(nullable = false)
-    private Integer remainingBreakTime;
+    private long remainingBreakTime;
 
     private LocalDateTime startOfBreakTime;
 

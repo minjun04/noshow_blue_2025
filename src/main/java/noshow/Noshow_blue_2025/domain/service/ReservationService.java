@@ -91,5 +91,18 @@ public class ReservationService {
                 seat.getNumOfExtensions()
         );
     }
+    public void updateRemainingBreakTime(Student student){
+        Seat seat = seatRepository.findBySeatId(student.getSeatId());
+
+        LocalDateTime startOfBreakTime = seat.getStartOfBreakTime();
+        LocalDateTime now = LocalDateTime.now();
+        long elapsedMinutes = Duration.between(startOfBreakTime, now).toMinutes();
+
+        long remaining = seat.getRemainingBreakTime() - elapsedMinutes;
+
+        seat.setRemainingBreakTime(remaining);
+        seatRepository.save(seat);
+    }
 }
+
 

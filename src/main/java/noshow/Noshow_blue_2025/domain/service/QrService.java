@@ -5,6 +5,7 @@ import noshow.Noshow_blue_2025.domain.repositoryInterface.SeatRepository;
 import noshow.Noshow_blue_2025.domain.repositoryInterface.StudentRepository;
 import noshow.Noshow_blue_2025.infra.entity.Seat;
 import noshow.Noshow_blue_2025.infra.entity.Student;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,20 +15,34 @@ import java.time.LocalDateTime;
 public class QrService {
     private final StudentRepository studentRepository;
     private final SeatRepository seatRepository;
+    private final ReservationService reservationService;
 
     // 이메일로 학생 조회 + entry 값 변경
-    public Student findAndUpdateEntryByEmail(String email) {
-        Student student1 = studentRepository.findByEmail(email);
-        if (student1 == null) {
-            throw new IllegalArgumentException("Student not found: " + email);
+    public ResponseEntity<Student> findAndUpdateEntryByEmail(Student student) {
+
+        if (student == null) {
+            throw new IllegalArgumentException("Student not found: ");
         }
 
-        if(student1.getEntry() != 1){
+        Student beforeStudent = Student.builder()
+                .name(student.getName())
+                .email(student.getEmail())
+                .studentId(student.getStudentId())
+                .seatId(student.getSeatId())
+                .entry(student.getEntry())
+                .build();
 
+        if(student.getEntry() != 1) {
+            if (student.getEntry() == 0){
+                student.setEntry(1);
+            }
+            else{
+                reservationService.updateRemainingBreakTime(student);
+                student.setEntry(1);
+            }
         }
-        Student student = student1;
-        student.setEntry(1);
-        return studentRepository.save(student1);  // entry 변경 후 저장
+        studentRepository.save(student);
+        return ResponseEntity.ok(studentRepository.save(beforeStudent));
     }
 
     public Boolean handleBreakOrReturn(Student student, boolean isBreak) {
@@ -45,15 +60,18 @@ public class QrService {
             else{
                 seat.setEndOfBreakTime(now.plusMinutes(80));
             }
+            student.setEntry(-1);
+            studentRepository.save(student);
             seatRepository.save(seat);
-            return true;
         } else {
 
             student.setSeatId(null);
+            student.setEntry(0);
             seat.setReserved(false); // 좌석 예약 해제
 
             seatRepository.save(seat);
-            return false;
+            studentRepository.save(student);
         }
+        return true;
     }
 }
