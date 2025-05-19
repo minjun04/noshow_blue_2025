@@ -2,7 +2,9 @@ package noshow.Noshow_blue_2025.domain.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import noshow.Noshow_blue_2025.domain.repositoryInterface.SeatRepository;
 import noshow.Noshow_blue_2025.domain.repositoryInterface.StudentRepository;
+import noshow.Noshow_blue_2025.infra.entity.Seat;
 import noshow.Noshow_blue_2025.infra.entity.Student;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,7 @@ import java.time.LocalDateTime;
 public class ReservationService {
 
     private final StudentRepository studentRepository;
-
+    private final SeatRepository seatRepository;
     // 기본 예약 시간: 3시간
     private static final Duration BASE_DURATION = Duration.ofHours(3);
     // 연장 시 추가 시간: 2시간
@@ -23,34 +25,45 @@ public class ReservationService {
     private static final int MAX_EXTENSIONS = 3;
 
     @Transactional
-    public String reserveSeat(String studentId, String seatId) {
+    public Boolean reserveSeat(String studentId, String seatId) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalArgumentException("학생을 찾을 수 없습니다."));
+        Seat seat = seatRepository.findBySeatId(student.getSeatId());
 
-        student.setSeatId(seatId);
-        student.setStartOfReservation(LocalDateTime.now());
-        student.setEndOfReservation(LocalDateTime.now().plus(BASE_DURATION));
-        student.setNumOfExtensions(0);
+        seat.setSeatId(seatId);
+        seat.setStartOfReservation(LocalDateTime.now());
+        seat.setEndOfReservation(LocalDateTime.now().plus(BASE_DURATION));
+        seat.setNumOfExtensions(0);
 
         studentRepository.save(student);
-        return "좌석 예약이 완료되었습니다. (3시간)";
+        return true;
     }
 
     @Transactional
-    public String extendReservation(String studentId) {
+    public Boolean extendReservation(String studentId) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalArgumentException("학생을 찾을 수 없습니다."));
+        Seat seat = seatRepository.findBySeatId(student.getSeatId());
 
-        if (student.getNumOfExtensions() >= MAX_EXTENSIONS) {
-            return "연장 가능 횟수를 모두 사용하였습니다.";
+        if (seat.getNumOfExtensions() >= MAX_EXTENSIONS) {
+            return false;
         }
 
-        student.setEndOfReservation(student.getEndOfReservation().plus(EXTENSION_DURATION));
-        student.setNumOfExtensions(student.getNumOfExtensions() + 1);
+        seat.setEndOfReservation(seat.getEndOfReservation().plus(EXTENSION_DURATION));
+        seat.setNumOfExtensions(seat.getNumOfExtensions() + 1);
 
         studentRepository.save(student);
-        return "예약이 2시간 연장되었습니다. 연장 횟수(" + student.getNumOfExtensions()+"/"+(3-student.getNumOfExtensions())+")";
+        return true;
     }
 
+    //남은 시간 계산
+    public long getRemainingMinutes(String studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalArgumentException("학생을 찾을 수 없습니다."));
+        Seat seat = seatRepository.findBySeatId(student.getSeatId());
+
+        if (seat.getEndOfReservation() == null) return 0;
+        return Duration.between(LocalDateTime.now(), seat.getEndOfReservation()).toMinutes();
+    }
 }
 

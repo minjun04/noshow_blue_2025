@@ -2,6 +2,8 @@ package noshow.Noshow_blue_2025.infra.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -38,4 +40,6 @@ public class Seat {
     @JoinColumn(name = "seatId", referencedColumnName = "seatId", insertable = false, updatable = false,
             foreignKey = @ForeignKey(name = "fk_seat_student", foreignKeyDefinition = "FOREIGN KEY (seatId) REFERENCES student(seatId) ON DELETE CASCADE"))
     private Student student;  // seatId는 Student 테이블의 FK
+
+
 }

@@ -2,7 +2,10 @@ package noshow.Noshow_blue_2025.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import noshow.Noshow_blue_2025.api.controller.dto.SeatStatusResponse;
+import noshow.Noshow_blue_2025.domain.repositoryInterface.SeatRepository;
 import noshow.Noshow_blue_2025.domain.repositoryInterface.StudentRepository;
+import noshow.Noshow_blue_2025.domain.service.ReservationService;
+import noshow.Noshow_blue_2025.infra.entity.Seat;
 import noshow.Noshow_blue_2025.infra.entity.Student;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,8 @@ import java.util.Optional;
 public class SeatStatusController {
 
     private final StudentRepository studentRepository;
+    private final SeatRepository seatRepository;
+    private final ReservationService reservationService;
 
     @GetMapping("/seat-status")
     public ResponseEntity<?> getSeatStatus(@RequestParam String studentId) {
@@ -26,18 +31,19 @@ public class SeatStatusController {
         }
 
         Student student = optionalStudent.get();
+        Seat seat = seatRepository.findBySeatId(student.getSeatId());
 
-        if (student.getSeatId() == null) {
+        if (seat.getSeatId() == null) {
             return ResponseEntity.ok("현재 예약된 좌석이 없습니다.");
         }
 
-        long remainingMinutes = student.getRemainingMinutes();
+        long remainingMinutes = reservationService.getRemainingMinutes(student.getStudentId());
 
         SeatStatusResponse response = new SeatStatusResponse(
                 student.getStudentId(),
                 student.getSeatId(),
                 remainingMinutes,
-                student.getNumOfExtensions()
+                seat.getNumOfExtensions()
         );
 
         return ResponseEntity.ok(response);
