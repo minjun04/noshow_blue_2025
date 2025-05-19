@@ -41,4 +41,16 @@ public class ReservationController {
             return ResponseEntity.badRequest().body(false);
         }
     }
+    @PostMapping("/Exit")
+    public ResponseEntity<Boolean> Exit(
+            @AuthenticationPrincipal Student student
+    ) {
+        try {
+            Boolean result = reservationService.ExitSeat(student.getStudentId());
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(false);
+        }
+    }
+
 }
