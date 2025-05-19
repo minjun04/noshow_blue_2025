@@ -18,7 +18,7 @@ public class QrController {
     @PostMapping("/info")
     public ResponseEntity<?> getUserInfoAndUpdateEntry(@RequestBody QrRequest request) {
         try {
-            Student student = qrService.findAndUpdateEntryByEmail(request.getEmail(), request.getValue());
+            Student student = qrService.findAndUpdateEntryByEmail(request.getEmail());
 
             return ResponseEntity.ok(new QrResponse(
                     student.getName(),
