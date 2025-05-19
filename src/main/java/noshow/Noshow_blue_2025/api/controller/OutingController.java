@@ -18,14 +18,16 @@ public class OutingController {
     @GetMapping("/check")
     public ResponseEntity<?> checkSeatAssignment(){
         Student student = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String message = outingService.checkSeatAssignment(student);
-        return ResponseEntity.ok(message);
+        Boolean reserved = outingService.checkSeatAssignment(student);
+        return ResponseEntity.ok(reserved);
     }
 
     @PostMapping("/break")
     public ResponseEntity<?> handleBreak(@RequestBody OutingRequest request) {
         Student student = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String result = outingService.handleBreakOrReturn(student, request.isBreak());
+        Boolean result = outingService.handleBreakOrReturn(student, request.isBreak());
         return ResponseEntity.ok(result);
     }
+
+
 }

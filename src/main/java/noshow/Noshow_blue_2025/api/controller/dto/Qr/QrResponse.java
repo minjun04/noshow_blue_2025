@@ -12,12 +12,14 @@ public class QrResponse {
     private String name;
     private String studentId;
     private String email;
+    private Integer entry;
 
     public static QrResponse from(Student student) {
         return QrResponse.builder()
                 .name(student.getName())
                 .studentId(student.getStudentId())
                 .email(student.getEmail())
+                .entry(student.getEntry())
                 .build();
 
     }
