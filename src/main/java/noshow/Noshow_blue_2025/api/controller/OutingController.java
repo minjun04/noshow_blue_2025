@@ -28,4 +28,6 @@ public class OutingController {
         Boolean result = outingService.handleBreakOrReturn(student, request.isBreak());
         return ResponseEntity.ok(result);
     }
+
+
 }

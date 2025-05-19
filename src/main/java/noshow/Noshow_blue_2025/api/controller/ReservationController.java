@@ -31,7 +31,6 @@ public class ReservationController {
     // 좌석 연장 요청
     @PostMapping("/extend")
     public ResponseEntity<Boolean> extendReservation(
-            @RequestBody ReserveSeatRequest reserveSeatRequest,
             @AuthenticationPrincipal Student student
 
     ) {

@@ -2,6 +2,7 @@ package noshow.Noshow_blue_2025.domain.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import noshow.Noshow_blue_2025.api.controller.dto.SeatStatus.SeatStatusResponse;
 import noshow.Noshow_blue_2025.domain.repositoryInterface.SeatRepository;
 import noshow.Noshow_blue_2025.domain.repositoryInterface.StudentRepository;
 import noshow.Noshow_blue_2025.infra.entity.Seat;
@@ -64,6 +65,31 @@ public class ReservationService {
 
         if (seat.getEndOfReservation() == null) return 0;
         return Duration.between(LocalDateTime.now(), seat.getEndOfReservation()).toMinutes();
+    }
+
+    public SeatStatusResponse getSeatStatus(Student student) {
+        // 좌석 정보 조회
+        Seat seat = seatRepository.findBySeatId(student.getSeatId());
+
+        // 좌석이 없으면 메시지 대신 null을 반환하거나 예외 처리
+        if (seat == null || seat.getSeatId() == null) {
+            // 필요 시 예외 던지거나 null 리턴 (컨트롤러에서 예외처리)
+            return new SeatStatusResponse(
+                    student.getStudentId(),
+                    null,
+                    0L,
+                    0
+            );
+        }
+
+        long remainingMinutes = getRemainingMinutes(student.getStudentId());
+
+        return new SeatStatusResponse(
+                student.getStudentId(),
+                student.getSeatId(),
+                remainingMinutes,
+                seat.getNumOfExtensions()
+        );
     }
 }
 
