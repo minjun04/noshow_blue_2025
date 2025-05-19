@@ -107,6 +107,8 @@ public class ReservationService {
             seat.setReserved(false);
             seat.setStartOfReservation(null);
             seat.setEndOfReservation(null);
+            seat.setEndOfBreakTime(null);
+            seat.setStartOfBreakTime(null);
             seat.setNumOfExtensions(0);
             seatRepository.save(seat);
         }
