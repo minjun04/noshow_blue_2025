@@ -63,21 +63,13 @@ public class QrService {
             student.setEntry(-1);
             studentRepository.save(student);
             seatRepository.save(seat);
+            return false;
         } else {
 
-            student.setSeatId(null);
-            student.setEntry(0);
-            seat.setReserved(false); // 좌석 예약 해제
-            seat.setEndOfBreakTime(null);
-            seat.setEndOfReservation(null);
-            seat.setNumOfExtensions(0);
-            seat.setRemainingBreakTime(210);
-            seat.setStartOfBreakTime(null);
-            seat.setStartOfReservation(null);
-
-            seatRepository.save(seat);
+            reservationService.ExitSeat(student.getStudentId());
             studentRepository.save(student);
+            return true;
         }
-        return true;
+
     }
 }

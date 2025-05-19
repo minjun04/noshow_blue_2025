@@ -2,7 +2,9 @@ package noshow.Noshow_blue_2025.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import noshow.Noshow_blue_2025.api.controller.dto.Gps.GpsRequest;
+import noshow.Noshow_blue_2025.domain.repositoryInterface.SeatRepository;
 import noshow.Noshow_blue_2025.domain.repositoryInterface.StudentRepository;
+import noshow.Noshow_blue_2025.infra.entity.Seat;
 import noshow.Noshow_blue_2025.infra.entity.Student;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +13,12 @@ import org.springframework.stereotype.Service;
 public class GpsService {
 
     private final StudentRepository studentRepository;
+    private final ReservationService reservationService;
 
     private static final double LIBRARY_LAT = 37.2839;
     private static final double LIBRARY_LON = 127.0450;
     private static final double RADIUS_METERS = 100.0;
+    private final SeatRepository seatRepository;
 
     public String processGpsRequest(GpsRequest gpsRequest, String studentId) {
         double distance = haversine(
@@ -31,11 +35,9 @@ public class GpsService {
         } else {
             // 예: 도서관 밖 → 자리 반납 또는 퇴실 처리
             Student student = studentRepository.findByStudentId(studentId);
-            if (student == null) {
-                throw new IllegalArgumentException("학생 없음");
-            }
-
-            student.setEntry(-1);
+            Seat seat = seatRepository.findBySeatId(student.getSeatId());
+            reservationService.ExitSeat(studentId);
+            studentRepository.save(student);
             return "사용자가 도서관 반경 밖입니다.";
         }
     }
