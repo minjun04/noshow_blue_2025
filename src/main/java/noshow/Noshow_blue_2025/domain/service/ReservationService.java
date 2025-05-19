@@ -91,5 +91,26 @@ public class ReservationService {
                 seat.getNumOfExtensions()
         );
     }
+
+    @Transactional
+    public Boolean ExitSeat(String studentId) {
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new IllegalArgumentException("학생을 찾을 수 없습니다."));
+        String seatId = student.getSeatId();
+
+        if (seatId != null) {
+            student.setSeatId(null);
+            student.setEntry(0); // 퇴실
+            studentRepository.save(student);
+
+            Seat seat = seatRepository.findById(seatId).orElseThrow();
+            seat.setReserved(false);
+            seat.setStartOfReservation(null);
+            seat.setEndOfReservation(null);
+            seat.setNumOfExtensions(0);
+            seatRepository.save(seat);
+        }
+        return true;
+    }
 }
 
