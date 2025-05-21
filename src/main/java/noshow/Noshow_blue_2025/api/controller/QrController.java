@@ -19,7 +19,7 @@ public class QrController {
     private final QrService qrService;
 
     @PostMapping("/info")
-    public ResponseEntity<?> getUserInfoAndUpdateEntry(@AuthenticationPrincipal Student student) {
+    public ResponseEntity<?> UpdateEntry(@AuthenticationPrincipal Student student) {
         try {
             return qrService.UpdateEntry(student);
         } catch (IllegalArgumentException e) {
