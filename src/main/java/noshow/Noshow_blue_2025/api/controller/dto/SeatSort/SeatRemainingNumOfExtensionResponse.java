@@ -1,4 +1,4 @@
-package noshow.Noshow_blue_2025.api.controller.dto;
+package noshow.Noshow_blue_2025.api.controller.dto.SeatSort;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,8 +1,8 @@
 package noshow.Noshow_blue_2025.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import noshow.Noshow_blue_2025.api.controller.dto.SeatRemainingNumOfExtensionResponse;
-import noshow.Noshow_blue_2025.api.controller.dto.SeatRemainingTimeResponse;
+import noshow.Noshow_blue_2025.api.controller.dto.SeatSort.SeatRemainingNumOfExtensionResponse;
+import noshow.Noshow_blue_2025.api.controller.dto.SeatSort.SeatRemainingTimeResponse;
 import noshow.Noshow_blue_2025.domain.service.SeatSortService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

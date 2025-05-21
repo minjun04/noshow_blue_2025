@@ -9,7 +9,13 @@ import java.util.List;
 public interface SeatRepository extends JpaRepository<Seat, String> {
     Seat findBySeatId(String seatId);
 
-    // 예약된 좌석만 뽑아올수 있도록 처리
-    @Query("SELECT s FROM Seat s WHERE s.reserved = true AND s.endOfReservation > CURRENT_TIMESTAMP")
-    List<Seat> findAllReservedSeats();
+    @Query("SELECT s FROM Seat s " +
+            "WHERE s.reserved = true " +
+            "ORDER BY s.numOfExtensions DESC, s.endOfReservation ASC")
+    List<Seat> findTop5ByNumOfExtensions(org.springframework.data.domain.Pageable pageable);
+
+    @Query("SELECT s FROM Seat s " +
+            "WHERE s.reserved = true " +
+            "ORDER BY s.endOfReservation ASC")
+    List<Seat> findTop5ByRemainingTime(org.springframework.data.domain.Pageable pageable);
 }
