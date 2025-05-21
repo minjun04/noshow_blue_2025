@@ -19,9 +19,9 @@ public class QrController {
     private final QrService qrService;
 
     @PostMapping("/info")
-    public ResponseEntity<?> getUserInfoAndUpdateEntry(@AuthenticationPrincipal Student student) {
+    public ResponseEntity<?> UpdateEntry(@AuthenticationPrincipal Student student) {
         try {
-            return qrService.findAndUpdateEntryByEmail(student);
+            return qrService.UpdateEntry(student);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
         }
