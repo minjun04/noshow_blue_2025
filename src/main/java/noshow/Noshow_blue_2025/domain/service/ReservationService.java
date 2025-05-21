@@ -19,6 +19,7 @@ public class ReservationService {
 
     private final StudentRepository studentRepository;
     private final SeatRepository seatRepository;
+    private final FavoriteService favoriteService;
     // 기본 예약 시간: 3시간
     private static final Duration BASE_DURATION = Duration.ofHours(3);
     // 연장 시 추가 시간: 2시간
@@ -126,6 +127,8 @@ public class ReservationService {
             seat.setEndOfBreakTime(null);
             seat.setNumOfExtensions(0);
             seatRepository.save(seat);
+
+            favoriteService.sendFcmToStudent(student, seatId);
         }
         return true;
     }

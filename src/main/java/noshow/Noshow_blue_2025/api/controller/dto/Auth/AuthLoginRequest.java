@@ -7,4 +7,5 @@ import lombok.Data;
 @Builder
 public class AuthLoginRequest {
     String idToken;
+    String fcmToken;
 }

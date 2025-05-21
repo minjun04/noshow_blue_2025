@@ -22,6 +22,7 @@ public class Student {
     private String email;
     private String seatId;
     private Integer entry;
+    private String fcmToken;
 
     @Builder
     private Student(String name, String email, String studentId, String seatId, Integer entry) {
