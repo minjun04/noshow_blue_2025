@@ -2,9 +2,11 @@ package noshow.Noshow_blue_2025.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import noshow.Noshow_blue_2025.api.controller.dto.SeatStatus.OtherSeatStatusResponse;
+import noshow.Noshow_blue_2025.api.controller.dto.SeatStatus.SeatCountResponse;
 import noshow.Noshow_blue_2025.api.controller.dto.SeatStatus.SeatStatusResponse;
 import noshow.Noshow_blue_2025.domain.service.OtherUserSeatStatusService;
 import noshow.Noshow_blue_2025.domain.service.ReservationService;
+import noshow.Noshow_blue_2025.domain.service.SeatCountService;
 import noshow.Noshow_blue_2025.infra.entity.Student;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +22,7 @@ public class SeatStatusController {
 
     private final ReservationService reservationService;
     private final OtherUserSeatStatusService otherUserSeatStatusService;
+    private final SeatCountService seatCountService;
 
     @GetMapping("/status")
     public ResponseEntity<?> getSeatStatus(@AuthenticationPrincipal Student student) { //나의 좌석 상태
@@ -31,6 +34,11 @@ public class SeatStatusController {
     public ResponseEntity<?> getOtherSeatStatus(String seatId) {
         OtherSeatStatusResponse response = otherUserSeatStatusService.getOtherSeatStatus(seatId);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/seatcount")
+    public int seatCount(){
+        return seatCountService.getSeatCount();
     }
 }
 
