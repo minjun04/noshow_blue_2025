@@ -70,6 +70,12 @@ public class QrService {
             studentRepository.save(student);
             return true;
         }
+    }
 
+    public Boolean isReserved(Student student) {
+        if (student.getSeatId() == null){
+            return false;
+        }
+        return true;
     }
 }
