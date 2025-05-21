@@ -31,6 +31,9 @@ public class ReservationService {
     public Boolean reserveSeat(String studentId, String seatId) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalArgumentException("학생을 찾을 수 없습니다."));
+        if(student.getEntry()!=1){
+            return false;
+        }
         Seat seat = seatRepository.findBySeatId(student.getSeatId());
 
         //만약 이미 예약한 좌석이 존재하면 null 처리
@@ -52,6 +55,10 @@ public class ReservationService {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalArgumentException("학생을 찾을 수 없습니다."));
         Seat seat = seatRepository.findBySeatId(student.getSeatId());
+
+        if(student.getEntry()!=1){
+            return false;
+        }
 
         if (seat.getNumOfExtensions() >= MAX_EXTENSIONS) {
             return false;
