@@ -22,7 +22,7 @@ public class ReservationService {
     // 기본 예약 시간: 3시간
     private static final Duration BASE_DURATION = Duration.ofHours(3);
     // 연장 시 추가 시간: 2시간
-    private static final Duration EXTENSION_DURATION = Duration.ofHours(2);
+    private static final Duration EXTENSION_DURATION = Duration.ofHours(4);
     // 최대 연장 가능 횟수
     private static final int MAX_EXTENSIONS = 3;
 
