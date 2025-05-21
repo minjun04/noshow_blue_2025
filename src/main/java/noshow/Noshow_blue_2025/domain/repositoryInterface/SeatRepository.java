@@ -19,7 +19,7 @@ public interface SeatRepository extends JpaRepository<Seat, String> {
             "ORDER BY s.endOfReservation ASC")
     List<Seat> findTop5ByRemainingTime(org.springframework.data.domain.Pageable pageable);
 
-    @Query("SELECT COUNT(s) FROM Seat s" +
+    @Query("SELECT COUNT(s) FROM Seat s " +
             "WHERE s.reserved = false")
     int findSeatCount();
 }

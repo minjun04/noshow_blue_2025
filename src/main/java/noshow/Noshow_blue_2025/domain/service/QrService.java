@@ -42,7 +42,6 @@ public class QrService {
             }
         }
         studentRepository.save(student);
-        System.out.println(beforeStudent);
         return ResponseEntity.ok(beforeStudent);
     }
 
