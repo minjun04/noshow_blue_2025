@@ -3,7 +3,6 @@ package noshow.Noshow_blue_2025.infra.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -36,10 +35,10 @@ public class Seat {
 
     private LocalDateTime endOfReservation;
 
-    @ManyToOne
-    @JoinColumn(name = "seatId", referencedColumnName = "seatId", insertable = false, updatable = false,
+    @OneToOne
+    @JoinColumn(name = "seatId", referencedColumnName = "seatId",
             foreignKey = @ForeignKey(name = "fk_seat_student", foreignKeyDefinition = "FOREIGN KEY (seatId) REFERENCES student(seatId) ON DELETE CASCADE"))
-    private Student student;  // seatId는 Student 테이블의 FK
+    private Student student;
 
 
 }

@@ -52,7 +52,8 @@ public class AuthService {
             }
 
             String token = jwtTokenProvider.generateToken(student.getEmail());
-
+            student.setFcmToken(request.getFcmToken());
+            studentRepository.save(student);
             return ResponseEntity.ok(new AuthLoginResponse(token));
 
         } catch (Exception e) {
