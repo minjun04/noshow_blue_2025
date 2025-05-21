@@ -17,8 +17,8 @@ public class QrService {
     private final SeatRepository seatRepository;
     private final ReservationService reservationService;
 
-    // 이메일로 학생 조회 + entry 값 변경
-    public ResponseEntity<Student> findAndUpdateEntryByEmail(Student student) {
+    // entry 값 변경
+    public ResponseEntity<Student> UpdateEntry(Student student) {
 
         if (student == null) {
             throw new IllegalArgumentException("Student not found: ");
@@ -42,7 +42,7 @@ public class QrService {
             }
         }
         studentRepository.save(student);
-        return ResponseEntity.ok(studentRepository.save(beforeStudent));
+        return ResponseEntity.ok(beforeStudent);
     }
 
     public Boolean handleBreakOrReturn(Student student, boolean isBreak) {
