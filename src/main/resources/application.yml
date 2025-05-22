@@ -20,6 +20,8 @@ spring:
 jwt:
   secret: VGhpcy1pcy1hLXN1cGVyLXNlY3JldC1leGFtcGxlLWtleS1mb3ItSlc=
 
+firebase:
+  service-account-path: classpath:noshow-firebase.json
 
 server:
   port: 443

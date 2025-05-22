@@ -66,8 +66,9 @@ public class QrService {
         } else {
 
             reservationService.ExitSeat(student.getStudentId());
-            student.setEntry(0);
-            studentRepository.save(student);
+            Student student1 = studentRepository.findByStudentId(student.getStudentId());
+            student1.setEntry(0);
+            studentRepository.save(student1);
             return true;
         }
     }
