@@ -23,6 +23,7 @@ public class ReservationController {
             @AuthenticationPrincipal Student student) {
         try {
             Boolean result = reservationService.reserveSeat(student.getStudentId(), reserveSeatRequest.getSeatId());
+
             return ResponseEntity.ok(result);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(false);
