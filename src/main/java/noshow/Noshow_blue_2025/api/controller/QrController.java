@@ -25,7 +25,7 @@ public class QrController {
         }
     }
 
-    @PostMapping("/isReserved")
+    @GetMapping("/isReserved")
     public ResponseEntity<?> Reserved(@AuthenticationPrincipal Student student) {
         try {
             return ResponseEntity.ok(qrService.isReserved(student));
