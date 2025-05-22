@@ -33,12 +33,8 @@ public class ReservationService {
                 .orElseThrow(() -> new IllegalArgumentException("학생을 찾을 수 없습니다."));
         if(student.getEntry()!=1){
             return false;
-
         }
-
         Seat seat = seatRepository.findBySeatId(student.getSeatId());
-
-
 
         seat.setSeatId(seatId);
         seat.setStartOfReservation(LocalDateTime.now());
