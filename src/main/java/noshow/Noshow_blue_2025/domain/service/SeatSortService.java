@@ -42,9 +42,4 @@ public class SeatSortService {
                 .collect(Collectors.toList());
     }
 
-    public int getseatCount(){
-
-
-        return 1;
-    }
 }
