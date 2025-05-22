@@ -34,9 +34,11 @@ public class QrController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
         }
     }
+
     @PostMapping("/break")
     public ResponseEntity<?> handleBreak(@RequestBody OutingRequest request) {
         Student student = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(request.isBreak());
         Boolean result = qrService.handleBreakOrReturn(student, request.isBreak());
         return ResponseEntity.ok(result);
     }

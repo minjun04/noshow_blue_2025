@@ -5,6 +5,7 @@ import noshow.Noshow_blue_2025.domain.repositoryInterface.SeatRepository;
 import noshow.Noshow_blue_2025.domain.repositoryInterface.StudentRepository;
 import noshow.Noshow_blue_2025.infra.entity.Seat;
 import noshow.Noshow_blue_2025.infra.entity.Student;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -48,11 +49,9 @@ public class QrService {
     public Boolean handleBreakOrReturn(Student student, boolean isBreak) {
 
         Seat seat = seatRepository.findBySeatId(student.getSeatId());
-
+        System.out.println(isBreak);
         if (isBreak) {
-
             LocalDateTime now = LocalDateTime.now();
-
             seat.setStartOfBreakTime(now);
             if (now.plusMinutes(80).isAfter(now.plusMinutes(seat.getRemainingBreakTime()))){
                 seat.setEndOfBreakTime(now.plusMinutes(seat.getRemainingBreakTime()));
@@ -67,6 +66,7 @@ public class QrService {
         } else {
 
             reservationService.ExitSeat(student.getStudentId());
+            student.setEntry(0);
             studentRepository.save(student);
             return true;
         }
@@ -74,6 +74,8 @@ public class QrService {
 
     public Boolean isReserved(Student student) {
         if (student.getSeatId() == null){
+            student.setEntry(0);
+            studentRepository.save(student);
             return false;
         }
         return true;
