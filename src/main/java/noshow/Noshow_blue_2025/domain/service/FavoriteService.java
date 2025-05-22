@@ -2,6 +2,7 @@ package noshow.Noshow_blue_2025.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import noshow.Noshow_blue_2025.domain.repositoryInterface.FavoriteRepository;
+import noshow.Noshow_blue_2025.domain.repositoryInterface.SeatRepository;
 import noshow.Noshow_blue_2025.infra.entity.Favorite;
 import noshow.Noshow_blue_2025.infra.entity.Seat;
 import noshow.Noshow_blue_2025.infra.entity.Student;
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 public class FavoriteService {
 
     private final FavoriteRepository favoriteRepository;
+    private final SeatRepository seatRepository;
     RestTemplate restTemplate = new RestTemplate();
 
     public List<Seat> getFavoriteSeatsByStudent(Student student) {
@@ -49,4 +52,44 @@ public class FavoriteService {
         restTemplate.postForEntity("https://fcm.googleapis.com/fcm/send", request, String.class);
     }
 
+    public boolean addFavorite(Student student, String seatId) {
+        // 1. 좌석 찾기
+        Seat seat = seatRepository.findBySeatId(seatId);
+        if (seat == null) {
+            throw new IllegalArgumentException("해당 좌석이 존재하지 않습니다: " + seatId);
+        }
+
+        // 2. 중복 즐겨찾기 체크
+        boolean exists = favoriteRepository.existsByStudentAndSeat(student, seat);
+        if (exists) {
+            return false; // 이미 존재함
+        }
+
+        // 3. 즐겨찾기 생성 및 저장
+        Favorite favorite = Favorite.builder()
+                .student(student)
+                .seat(seat)
+                .build();
+        favoriteRepository.save(favorite);
+
+        return true;
+    }
+
+    public boolean deleteFavorite(Student student, String seatId) {
+        // 1. 좌석 조회
+        Seat seat = seatRepository.findBySeatId(seatId);
+        if (seat == null) {
+            throw new IllegalArgumentException("해당 좌석이 존재하지 않습니다: " + seatId);
+        }
+
+        // 2. 즐겨찾기 존재 여부 확인 및 조회
+        Optional<Favorite> favoriteOptional = favoriteRepository.findByStudentAndSeat(student, seat);
+        if (favoriteOptional.isEmpty()) {
+            return false; // 즐겨찾기 없음
+        }
+
+        // 3. 즐겨찾기 삭제
+        favoriteRepository.delete(favoriteOptional.get());
+        return true;
+    }
 }

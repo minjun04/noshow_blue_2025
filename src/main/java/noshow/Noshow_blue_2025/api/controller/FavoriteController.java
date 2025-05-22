@@ -1,6 +1,8 @@
 package noshow.Noshow_blue_2025.api.controller;
 
 import lombok.RequiredArgsConstructor;
+import noshow.Noshow_blue_2025.api.controller.dto.Favorite.addFavoriteRequest;
+import noshow.Noshow_blue_2025.api.controller.dto.Favorite.deleteFavoriteRequest;
 import noshow.Noshow_blue_2025.domain.service.FavoriteService;
 import noshow.Noshow_blue_2025.infra.entity.Seat;
 import noshow.Noshow_blue_2025.infra.entity.Student;
@@ -21,5 +23,17 @@ public class FavoriteController {
     public ResponseEntity<List<Seat>> getFavoriteSeats(@AuthenticationPrincipal Student student) {
         List<Seat> favorites = favoriteService.getFavoriteSeatsByStudent(student);
         return ResponseEntity.ok(favorites);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<?> addFavorite(@AuthenticationPrincipal Student student, addFavoriteRequest request){
+        boolean success = favoriteService.addFavorite(student, request.getSeatId());
+        return ResponseEntity.ok(success);
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteFavorite(@AuthenticationPrincipal Student student, deleteFavoriteRequest request){
+        boolean success = favoriteService.addFavorite(student, request.getSeatId());
+        return ResponseEntity.ok(success);
     }
 }

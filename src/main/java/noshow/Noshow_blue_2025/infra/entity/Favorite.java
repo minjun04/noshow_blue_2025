@@ -26,4 +26,5 @@ public class Favorite {
     @JoinColumn(name = "seatId", nullable = false,
             foreignKey = @ForeignKey(name = "fk_favorite_seat"))
     private Seat seat;
+
 }

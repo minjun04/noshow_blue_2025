@@ -2,7 +2,6 @@ package noshow.Noshow_blue_2025.api.controller;
 
 import lombok.RequiredArgsConstructor;
 import noshow.Noshow_blue_2025.api.controller.dto.Outing.OutingRequest;
-import noshow.Noshow_blue_2025.api.controller.dto.Qr.QrResponse;
 import noshow.Noshow_blue_2025.domain.service.QrService;
 import noshow.Noshow_blue_2025.infra.entity.Student;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -26,6 +24,7 @@ public class QrController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
         }
     }
+
     @PostMapping("/isReserved")
     public ResponseEntity<?> Reserved(@AuthenticationPrincipal Student student) {
         try {
