@@ -33,7 +33,7 @@ public class FavoriteController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteFavorite(@AuthenticationPrincipal Student student, deleteFavoriteRequest request){
-        boolean success = favoriteService.addFavorite(student, request.getSeatId());
+        boolean success = favoriteService.deleteFavorite(student, request.getSeatId());
         return ResponseEntity.ok(success);
     }
 }
