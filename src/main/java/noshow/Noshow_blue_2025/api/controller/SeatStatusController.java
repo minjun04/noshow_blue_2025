@@ -1,8 +1,6 @@
 package noshow.Noshow_blue_2025.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import noshow.Noshow_blue_2025.api.controller.dto.SeatStatus.OtherSeatStatusResponse;
-import noshow.Noshow_blue_2025.api.controller.dto.SeatStatus.SeatCountResponse;
 import noshow.Noshow_blue_2025.api.controller.dto.SeatStatus.SeatStatusResponse;
 import noshow.Noshow_blue_2025.domain.service.OtherUserSeatStatusService;
 import noshow.Noshow_blue_2025.domain.service.ReservationService;
@@ -32,7 +30,7 @@ public class SeatStatusController {
 
     @GetMapping("/otherUserStatus")
     public ResponseEntity<?> getOtherSeatStatus(String seatId) {
-        OtherSeatStatusResponse response = otherUserSeatStatusService.getOtherSeatStatus(seatId);
+        SeatStatusResponse response = otherUserSeatStatusService.getOtherSeatStatus(seatId);
         return ResponseEntity.ok(response);
     }
 

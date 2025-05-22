@@ -101,7 +101,6 @@ public class ReservationService {
         }
 
         SeatStatusResponse response = new SeatStatusResponse(
-                student.getStudentId(),
                 student.getSeatId(),
                 remainingMinutes,
                 seat.getNumOfExtensions()
@@ -118,7 +117,6 @@ public class ReservationService {
 
         if (seatId != null) {
             student.setSeatId(null);
-            student.setEntry(0); // 퇴실
             studentRepository.save(student);
 
             Seat seat = seatRepository.findById(seatId).orElseThrow();

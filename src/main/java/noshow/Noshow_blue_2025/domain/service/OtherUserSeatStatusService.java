@@ -1,7 +1,6 @@
 package noshow.Noshow_blue_2025.domain.service;
 
 import lombok.RequiredArgsConstructor;
-import noshow.Noshow_blue_2025.api.controller.dto.SeatStatus.OtherSeatStatusResponse;
 import noshow.Noshow_blue_2025.api.controller.dto.SeatStatus.SeatStatusResponse;
 import noshow.Noshow_blue_2025.infra.entity.Seat;
 import noshow.Noshow_blue_2025.domain.repositoryInterface.SeatRepository;
@@ -16,13 +15,13 @@ public class OtherUserSeatStatusService {
 
     private final SeatRepository seatRepository;
 
-    public OtherSeatStatusResponse getOtherSeatStatus(String seatId) {
+    public SeatStatusResponse getOtherSeatStatus(String seatId) {
         // 좌석 정보 조회
         Seat seat = seatRepository.findBySeatId(seatId);
 
         long remainingMinutes = getRemainingMinutes(seatId);
 
-        return new OtherSeatStatusResponse(
+        return new SeatStatusResponse(
                 seat.getSeatId(),
                 remainingMinutes,
                 seat.getNumOfExtensions()
