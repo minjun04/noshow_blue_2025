@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import noshow.Noshow_blue_2025.api.controller.dto.Reserve.ReserveSeatRequest;
 import noshow.Noshow_blue_2025.domain.service.ReservationService;
 import noshow.Noshow_blue_2025.infra.entity.Student;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -53,4 +54,12 @@ public class ReservationController {
         }
     }
 
+    @GetMapping("/isReserved")
+    public ResponseEntity<?> Reserved(@AuthenticationPrincipal Student student) {
+        try {
+            return ResponseEntity.ok(reservationService.isReserved(student));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
+        }
+    }
 }

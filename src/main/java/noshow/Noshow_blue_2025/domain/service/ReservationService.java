@@ -151,6 +151,13 @@ public class ReservationService {
         seat.setRemainingBreakTime(remaining);
         seatRepository.save(seat);
     }
+
+    public Boolean isReserved(Student student) {
+        if (student.getSeatId() == null){
+            return false;
+        }
+        return true;
+    }
 }
 
 
