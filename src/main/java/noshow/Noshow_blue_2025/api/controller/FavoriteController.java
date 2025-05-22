@@ -31,7 +31,7 @@ public class FavoriteController {
         return ResponseEntity.ok(success);
     }
 
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<?> deleteFavorite(@AuthenticationPrincipal Student student, deleteFavoriteRequest request){
         boolean success = favoriteService.addFavorite(student, request.getSeatId());
         return ResponseEntity.ok(success);
