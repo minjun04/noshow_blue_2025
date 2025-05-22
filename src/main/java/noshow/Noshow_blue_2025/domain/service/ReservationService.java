@@ -37,6 +37,7 @@ public class ReservationService {
         Seat seat = seatRepository.findBySeatId(seatId);
 
         seat.setSeatId(seatId);
+        seat.setReserved(true);
         seat.setStartOfReservation(LocalDateTime.now());
         seat.setEndOfReservation(LocalDateTime.now().plus(BASE_DURATION));
         seat.setNumOfExtensions(0);
@@ -120,7 +121,6 @@ public class ReservationService {
 
         if (seatId != null) {
             student.setSeatId(null);
-            student.setEntry(0); // 퇴실
             studentRepository.save(student);
 
             Seat seat = seatRepository.findById(seatId).orElseThrow();

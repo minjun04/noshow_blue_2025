@@ -92,4 +92,16 @@ public class FavoriteService {
         favoriteRepository.delete(favoriteOptional.get());
         return true;
     }
+
+    public void notifyStudentsOfAvailableSeat(String seatId) {
+        List<Favorite> favorites = favoriteRepository.findBySeat_SeatId(seatId);
+
+        for (Favorite favorite : favorites) {
+            Student student = favorite.getStudent();
+
+            if (student.getFcmToken() != null && !student.getFcmToken().isEmpty()) {
+                sendFcmToStudent(student, seatId);
+            }
+        }
+    }
 }

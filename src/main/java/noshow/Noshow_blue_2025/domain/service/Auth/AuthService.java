@@ -26,6 +26,7 @@ public class AuthService {
     //로그인
     public ResponseEntity<?> login(AuthLoginRequest request) {
         String idTokenString = request.getIdToken();
+
         try {
             GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
                     GoogleNetHttpTransport.newTrustedTransport(),
