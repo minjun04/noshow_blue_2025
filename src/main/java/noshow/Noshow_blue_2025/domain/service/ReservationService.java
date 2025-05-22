@@ -34,7 +34,7 @@ public class ReservationService {
         if(student.getEntry()!=1){
             return false;
         }
-        Seat seat = seatRepository.findBySeatId(seatId.getSeatId());
+        Seat seat = seatRepository.findBySeatId(seatId);
 
         seat.setSeatId(seatId);
         seat.setStartOfReservation(LocalDateTime.now());
