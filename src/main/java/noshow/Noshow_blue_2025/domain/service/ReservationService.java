@@ -36,11 +36,6 @@ public class ReservationService {
         }
         Seat seat = seatRepository.findBySeatId(student.getSeatId());
 
-        //만약 이미 예약한 좌석이 존재하면 null 처리
-        if(seat.getSeatId()!=null){
-            return false;
-        }
-
         seat.setSeatId(seatId);
         seat.setStartOfReservation(LocalDateTime.now());
         seat.setEndOfReservation(LocalDateTime.now().plus(BASE_DURATION));
