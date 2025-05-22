@@ -37,6 +37,7 @@ public class ReservationService {
         Seat seat = seatRepository.findBySeatId(seatId);
 
         seat.setSeatId(seatId);
+        seat.setReserved(true);
         seat.setStartOfReservation(LocalDateTime.now());
         seat.setEndOfReservation(LocalDateTime.now().plus(BASE_DURATION));
         seat.setNumOfExtensions(0);
