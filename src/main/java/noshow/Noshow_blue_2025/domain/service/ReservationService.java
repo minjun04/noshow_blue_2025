@@ -131,7 +131,7 @@ public class ReservationService {
             seat.setNumOfExtensions(0);
             seatRepository.save(seat);
 
-            favoriteService.sendFcmToStudent(student, seatId);
+            //favoriteService.sendFcmToStudent(student, seatId);
         }
         return true;
     }

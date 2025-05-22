@@ -6,13 +6,17 @@ import noshow.Noshow_blue_2025.domain.repositoryInterface.SeatRepository;
 import noshow.Noshow_blue_2025.infra.entity.Favorite;
 import noshow.Noshow_blue_2025.infra.entity.Seat;
 import noshow.Noshow_blue_2025.infra.entity.Student;
+import noshow.Noshow_blue_2025.security.FirebaseProperties;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import com.google.auth.oauth2.GoogleCredentials;
 
-
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,6 +28,8 @@ public class FavoriteService {
 
     private final FavoriteRepository favoriteRepository;
     private final SeatRepository seatRepository;
+    private final FirebaseProperties firebaseProperties;
+
     RestTemplate restTemplate = new RestTemplate();
 
     public List<Seat> getFavoriteSeatsByStudent(Student student) {
@@ -33,7 +39,7 @@ public class FavoriteService {
                 .collect(Collectors.toList());
     }
 
-    public void sendFcmToStudent(Student student, String seatId) {
+    public void sendFcmToStudent(Student student, String seatId) throws IOException {
         String fcmToken = student.getFcmToken();
 
         Map<String, Object> body = Map.of(
@@ -45,11 +51,11 @@ public class FavoriteService {
         );
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "key=BLKyPCURTsLPtaruv57WNAV2lYeXj5EuJgl-L5SLNZ4i5-rj5EKmlW9TMXaV9M0NUt6zYzWI44vbIc9SPoJFhJ4"); // Firebase > 프로젝트 설정 > 클라우드 메시징
+        headers.setBearerAuth(getAccessToken());
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
-        restTemplate.postForEntity("https://fcm.googleapis.com/fcm/send", request, String.class);
+        restTemplate.postForEntity("https://fcm.googleapis.com/v1/projects/noshow2025-c3b7a/messages:send", request, String.class);
     }
 
     public boolean addFavorite(Student student, String seatId) {
@@ -93,7 +99,7 @@ public class FavoriteService {
         return true;
     }
 
-    public void notifyStudentsOfAvailableSeat(String seatId) {
+    public void notifyStudentsOfAvailableSeat(String seatId) throws IOException {
         List<Favorite> favorites = favoriteRepository.findBySeat_SeatId(seatId);
 
         for (Favorite favorite : favorites) {
@@ -103,5 +109,13 @@ public class FavoriteService {
                 sendFcmToStudent(student, seatId);
             }
         }
+    }
+    public String getAccessToken() throws IOException {
+        GoogleCredentials googleCredentials = GoogleCredentials
+                .fromStream(new ClassPathResource(firebaseProperties.getServiceAccountPath()).getInputStream())
+                .createScoped(List.of("https://www.googleapis.com/auth/firebase.messaging"));
+
+        googleCredentials.refreshIfExpired();
+        return googleCredentials.getAccessToken().getTokenValue();
     }
 }
