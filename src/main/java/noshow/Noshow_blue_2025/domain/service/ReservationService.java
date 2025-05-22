@@ -40,7 +40,9 @@ public class ReservationService {
         seat.setStartOfReservation(LocalDateTime.now());
         seat.setEndOfReservation(LocalDateTime.now().plus(BASE_DURATION));
         seat.setNumOfExtensions(0);
+        student.setSeatId(seatId);
 
+        seatRepository.save(seat);
         studentRepository.save(student);
         return true;
     }
