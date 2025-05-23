@@ -22,4 +22,8 @@ public interface SeatRepository extends JpaRepository<Seat, String> {
     @Query("SELECT COUNT(s) FROM Seat s " +
             "WHERE s.reserved = false")
     int findSeatCount();
+
+    @Query("SELECT seatId FROM Seat " +
+            "WHERE Seat.reserved = true" )
+    List<String> findAllSeatId();
 }

@@ -8,10 +8,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class OtherUserSeatStatusService {
+public class SeatStatusService {
 
     private final SeatRepository seatRepository;
 
@@ -32,5 +33,10 @@ public class OtherUserSeatStatusService {
         Seat seat = seatRepository.findBySeatId(seatId);
         if (seat.getEndOfReservation() == null) return 0;
         return Duration.between(LocalDateTime.now(), seat.getEndOfReservation()).toMinutes();
+    }
+
+    public List<String> getReservedSeat(){
+        List<String> seat = seatRepository.findAllSeatId();
+        return seat;
     }
 }
