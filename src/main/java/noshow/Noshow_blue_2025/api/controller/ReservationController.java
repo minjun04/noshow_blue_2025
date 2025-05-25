@@ -34,7 +34,6 @@ public class ReservationController {
     @PostMapping("/extend")
     public ResponseEntity<Boolean> extendReservation(
             @AuthenticationPrincipal Student student
-
     ) {
         try {
             Boolean result = reservationService.extendReservation(student.getStudentId());

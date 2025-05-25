@@ -23,7 +23,6 @@ public interface SeatRepository extends JpaRepository<Seat, String> {
             "WHERE s.reserved = false")
     int findSeatCount();
 
-    @Query("SELECT seatId FROM Seat " +
-            "WHERE Seat.reserved = true" )
+    @Query("SELECT s.seatId FROM Seat s WHERE s.reserved = true")
     List<String> findAllSeatId();
 }

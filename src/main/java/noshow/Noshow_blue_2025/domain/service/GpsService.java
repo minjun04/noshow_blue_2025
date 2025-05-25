@@ -37,7 +37,6 @@ public class GpsService {
             Student student = studentRepository.findByStudentId(studentId);
             Seat seat = seatRepository.findBySeatId(student.getSeatId());
             reservationService.ExitSeat(studentId);
-            studentRepository.save(student);
             return "사용자가 도서관 반경 밖입니다.";
         }
     }
