@@ -18,7 +18,7 @@ public class SeatInitializer implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         if (seatRepository.count() == 0) { // 이미 있으면 중복 방지
-            IntStream.rangeClosed(1, 180).forEach(i -> {
+            IntStream.rangeClosed(1, 60).forEach(i -> {
                 Seat seat = Seat.builder()
                         .seatId(String.valueOf(i))
                         .reserved(false)
@@ -27,7 +27,7 @@ public class SeatInitializer implements ApplicationRunner {
                         .build();
                 seatRepository.save(seat);
             });
-            System.out.println("Seat 테이블에 1~180번 좌석 초기화 완료");
+            System.out.println("Seat 테이블에 1~60번 좌석 초기화 완료");
         } else {
             System.out.println("Seat 테이블은 이미 초기화되어 있음");
         }

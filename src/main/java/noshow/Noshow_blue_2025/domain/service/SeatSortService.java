@@ -19,15 +19,17 @@ public class SeatSortService {
     private final SeatRepository seatRepository;
 
     public List<SeatRemainingTimeResponse> getTop5LeastRemainingTimeSeats() {
+        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
         LocalDateTime now = LocalDateTime.now();
-
-        return seatRepository.findTop5ByRemainingTime(PageRequest.of(0, 5)).stream()
+        List<SeatRemainingTimeResponse> result = seatRepository.findTop5ByRemainingTime(PageRequest.of(0, 5)).stream()
                 .map(seat -> new SeatRemainingTimeResponse(
                         seat.getSeatId(),
                         Duration.between(now, seat.getEndOfReservation()).toMinutes()
                 ))
                 .collect(Collectors.toList());
+        System.out.println("hello" + result);
+        return result;
     }
 
     public List<SeatRemainingNumOfExtensionResponse> getTop5LeastRemainingNumOfExtensionSeats() {

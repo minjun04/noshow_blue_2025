@@ -18,12 +18,12 @@ public class SeatSortController {
 
     private final SeatSortService seatSortService;
 
-    @GetMapping("/remaining-time")
+    @GetMapping("/remainingTime")
     public ResponseEntity<List<SeatRemainingTimeResponse>> getLeastRemainingTimeSeats() {
         return ResponseEntity.ok(seatSortService.getTop5LeastRemainingTimeSeats());
     }
 
-    @GetMapping("/remaining-NumOfExtension")
+    @GetMapping("/remainingNumOfExtension")
     public ResponseEntity<List<SeatRemainingNumOfExtensionResponse>> getLeastRemainingNumOfExtensionSeats() {
         return ResponseEntity.ok(seatSortService.getTop5LeastRemainingNumOfExtensionSeats());
     }

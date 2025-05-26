@@ -34,11 +34,11 @@ public class QrService {
                 .build();
 
         if(student.getEntry() != 1) {
-            if (student.getEntry() == 0){
+            if(student.getEntry() == -1){
+                reservationService.updateRemainingBreakTime(student);
                 student.setEntry(1);
             }
             else{
-                reservationService.updateRemainingBreakTime(student);
                 student.setEntry(1);
             }
         }
@@ -47,9 +47,7 @@ public class QrService {
     }
 
     public Boolean handleBreakOrReturn(Student student, boolean isBreak) {
-
         Seat seat = seatRepository.findBySeatId(student.getSeatId());
-        System.out.println(isBreak);
         if (isBreak) {
             LocalDateTime now = LocalDateTime.now();
             seat.setStartOfBreakTime(now);

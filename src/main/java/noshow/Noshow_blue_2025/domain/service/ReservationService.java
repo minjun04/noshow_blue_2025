@@ -102,7 +102,7 @@ public class ReservationService {
         if(student.getEntry()==-1 && now.isAfter(seat.getEndOfBreakTime())){
             ExitSeat(student.getStudentId());
         }
-
+        System.out.println(student.getSeatId() + remainingMinutes + seat.getNumOfExtensions());
         SeatStatusResponse response = new SeatStatusResponse(
                 student.getSeatId(),
                 remainingMinutes,
@@ -137,7 +137,9 @@ public class ReservationService {
     }
     public void updateRemainingBreakTime(Student student){
         Seat seat = seatRepository.findBySeatId(student.getSeatId());
-
+        if (seat == null) {
+            throw new IllegalStateException("해당 학생은 좌석이 배정되어 있지 않습니다.");
+        }
         LocalDateTime startOfBreakTime = seat.getStartOfBreakTime();
         LocalDateTime now = LocalDateTime.now();
         long elapsedMinutes = Duration.between(startOfBreakTime, now).toMinutes();
@@ -145,6 +147,7 @@ public class ReservationService {
         long remaining = seat.getRemainingBreakTime() - elapsedMinutes;
 
         seat.setRemainingBreakTime(remaining);
+        seat.setEndOfBreakTime(null);
         seatRepository.save(seat);
     }
 

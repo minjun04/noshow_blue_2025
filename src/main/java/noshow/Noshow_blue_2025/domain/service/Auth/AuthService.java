@@ -79,6 +79,7 @@ public class AuthService {
                 .email(request.getEmail())
                 .studentId(request.getStudentId())
                 .name(request.getName())
+                .entry(-2)
                 .build();
 
         studentRepository.save(student);
