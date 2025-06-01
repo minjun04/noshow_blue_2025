@@ -10,6 +10,7 @@ import noshow.Noshow_blue_2025.infra.entity.Student;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -31,7 +32,7 @@ public class ReservationService {
     public Boolean reserveSeat(String studentId, String seatId) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new IllegalArgumentException("학생을 찾을 수 없습니다."));
-        if(student.getEntry()!=1){
+        if (student.getEntry() != 1) {
             return false;
         }
         Seat seat = seatRepository.findBySeatId(seatId);
@@ -54,7 +55,7 @@ public class ReservationService {
                 .orElseThrow(() -> new IllegalArgumentException("학생을 찾을 수 없습니다."));
         Seat seat = seatRepository.findBySeatId(student.getSeatId());
 
-        if(student.getEntry()!=1){
+        if (student.getEntry() != 1) {
             return false;
         }
 
@@ -83,7 +84,7 @@ public class ReservationService {
 
     public ResponseEntity<?> getSeatStatus(Student student) {
 
-        if (student.getEntry()==0 || student.getSeatId() == null) {
+        if (student.getEntry() == 0 || student.getSeatId() == null) {
             // 좌석 ID가 없으면 즉시 204 No Content
             return ResponseEntity.noContent().build();
         }
@@ -93,22 +94,20 @@ public class ReservationService {
         long remainingMinutes = getRemainingMinutes(student.getStudentId());
 
         //예약시간 초과시 강제 퇴실
-        LocalDateTime now =LocalDateTime.now();
-        if(now.isAfter(seat.getEndOfReservation())){
+        LocalDateTime now = LocalDateTime.now();
+        if (now.isAfter(seat.getEndOfReservation())) {
             ExitSeat(student.getStudentId());
         }
 
         //외출시간 초과시 강제퇴실
-        if(student.getEntry()==-1 && now.isAfter(seat.getEndOfBreakTime())){
+        if (student.getEntry() == -1 && now.isAfter(seat.getEndOfBreakTime())) {
             ExitSeat(student.getStudentId());
         }
-        System.out.println(student.getSeatId() + remainingMinutes + seat.getNumOfExtensions());
         SeatStatusResponse response = new SeatStatusResponse(
                 student.getSeatId(),
                 remainingMinutes,
                 seat.getNumOfExtensions()
         );
-
         return ResponseEntity.ok(response);
     }
 
@@ -120,6 +119,9 @@ public class ReservationService {
 
         if (seatId != null) {
             student.setSeatId(null);
+            if (student.getEntry() == -1) {
+                student.setEntry(0);
+            }
             studentRepository.save(student);
 
             Seat seat = seatRepository.findById(seatId).orElseThrow();
@@ -131,11 +133,16 @@ public class ReservationService {
             seat.setNumOfExtensions(0);
             seatRepository.save(seat);
 
-            //favoriteService.sendFcmToStudent(student, seatId);
+            try {
+                favoriteService.sendFcmToStudent(student, seatId);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         return true;
     }
-    public void updateRemainingBreakTime(Student student){
+
+    public void updateRemainingBreakTime(Student student) {
         Seat seat = seatRepository.findBySeatId(student.getSeatId());
         if (seat == null) {
             throw new IllegalStateException("해당 학생은 좌석이 배정되어 있지 않습니다.");
@@ -152,7 +159,7 @@ public class ReservationService {
     }
 
     public Boolean isReserved(Student student) {
-        if (student.getSeatId() == null){
+        if (student.getSeatId() == null) {
             return false;
         }
         return true;

@@ -19,7 +19,6 @@ public class SeatSortService {
     private final SeatRepository seatRepository;
 
     public List<SeatRemainingTimeResponse> getTop5LeastRemainingTimeSeats() {
-        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
         LocalDateTime now = LocalDateTime.now();
         List<SeatRemainingTimeResponse> result = seatRepository.findTop5ByRemainingTime(PageRequest.of(0, 5)).stream()

@@ -21,12 +21,12 @@ public class SeatStatusService {
         Seat seat = seatRepository.findBySeatId(seatId);
 
         long remainingMinutes = getRemainingMinutes(seatId);
-
-        return new SeatStatusResponse(
+        SeatStatusResponse response = new SeatStatusResponse(
                 seat.getSeatId(),
                 remainingMinutes,
                 seat.getNumOfExtensions()
         );
+        return response;
     }
 
     public long getRemainingMinutes(String seatId) {

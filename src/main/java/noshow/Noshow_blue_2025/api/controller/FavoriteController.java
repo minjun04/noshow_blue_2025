@@ -26,13 +26,13 @@ public class FavoriteController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addFavorite(@AuthenticationPrincipal Student student, addFavoriteRequest request){
+    public ResponseEntity<?> addFavorite(@AuthenticationPrincipal Student student,@RequestBody addFavoriteRequest request){
         boolean success = favoriteService.addFavorite(student, request.getSeatId());
         return ResponseEntity.ok(success);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteFavorite(@AuthenticationPrincipal Student student, deleteFavoriteRequest request){
+    public ResponseEntity<?> deleteFavorite(@AuthenticationPrincipal Student student,@RequestBody deleteFavoriteRequest request){
         boolean success = favoriteService.deleteFavorite(student, request.getSeatId());
         return ResponseEntity.ok(success);
     }

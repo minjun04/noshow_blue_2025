@@ -35,8 +35,11 @@ public class QrService {
 
         if(student.getEntry() != 1) {
             if(student.getEntry() == -1){
+                if (student.getSeatId() == null) {
+                    // 좌석 없음: 예외 던지지 말고 응답 메시지로 처리
+                    return ResponseEntity.badRequest().body(null);
+                }
                 reservationService.updateRemainingBreakTime(student);
-                student.setEntry(1);
             }
             else{
                 student.setEntry(1);
