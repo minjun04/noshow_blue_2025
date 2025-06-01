@@ -42,6 +42,7 @@ public class ReservationController {
             return ResponseEntity.badRequest().body(false);
         }
     }
+
     @PostMapping("/exit")
     public ResponseEntity<Boolean> Exit(
             @AuthenticationPrincipal Student student
@@ -53,7 +54,7 @@ public class ReservationController {
             return ResponseEntity.badRequest().body(false);
         }
     }
-
+    
     @GetMapping("/isReserved")
     public ResponseEntity<?> Reserved(@AuthenticationPrincipal Student student) {
         try {
