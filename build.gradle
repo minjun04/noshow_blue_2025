@@ -51,6 +51,11 @@ dependencies {
 
 }
 
+tasks.named('processResources') {
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

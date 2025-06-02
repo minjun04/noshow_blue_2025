@@ -8,15 +8,18 @@ import noshow.Noshow_blue_2025.infra.entity.Seat;
 import noshow.Noshow_blue_2025.infra.entity.Student;
 import noshow.Noshow_blue_2025.security.FirebaseProperties;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import com.google.auth.oauth2.GoogleCredentials;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,15 +43,20 @@ public class FavoriteService {
     }
 
     public void sendFcmToStudent(Student student, String seatId) throws IOException {
+
         String fcmToken = student.getFcmToken();
 
-        Map<String, Object> body = Map.of(
-                "to", fcmToken,
-                "notification", Map.of(
-                        "title", "좌석 알림",
-                        "body", "선호 좌석 " + seatId + "이 비었습니다!"
-                )
+        Map<String, Object> notification = Map.of(
+                "title", "좌석 알림",
+                "body", "선호 좌석 " + seatId + "이 비었습니다!"
         );
+
+        Map<String, Object> message = Map.of(
+                "token", fcmToken,
+                "notification", notification
+        );
+
+        Map<String, Object> body = Map.of("message", message);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(getAccessToken());
@@ -56,7 +64,10 @@ public class FavoriteService {
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
         restTemplate.postForEntity("https://fcm.googleapis.com/v1/projects/noshow2025-c3b7a/messages:send", request, String.class);
+
+
     }
+
 
     public boolean addFavorite(Student student, String seatId) {
         // 1. 좌석 찾기
@@ -111,11 +122,18 @@ public class FavoriteService {
         }
     }
     public String getAccessToken() throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        String path = firebaseProperties.getServiceAccountPath().replace("classpath:", "");
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path);
+       // InputStream inputStream = classLoader.getResourceAsStream(firebaseProperties.getServiceAccountPath());
+        // 기존 로직 유지
         GoogleCredentials googleCredentials = GoogleCredentials
-                .fromStream(new ClassPathResource(firebaseProperties.getServiceAccountPath()).getInputStream())
+                .fromStream(inputStream)
                 .createScoped(List.of("https://www.googleapis.com/auth/firebase.messaging"));
 
         googleCredentials.refreshIfExpired();
         return googleCredentials.getAccessToken().getTokenValue();
     }
+
 }

@@ -27,7 +27,6 @@ public class SeatSortService {
                         Duration.between(now, seat.getEndOfReservation()).toMinutes()
                 ))
                 .collect(Collectors.toList());
-        System.out.println("hello" + result);
         return result;
     }
 

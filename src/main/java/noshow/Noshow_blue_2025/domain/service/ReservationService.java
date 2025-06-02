@@ -90,7 +90,7 @@ public class ReservationService {
         }
         // 좌석 정보 조회
         Seat seat = seatRepository.findBySeatId(student.getSeatId());
-
+        System.out.println(seat.getEndOfReservation());
         long remainingMinutes = getRemainingMinutes(student.getStudentId());
 
         //예약시간 초과시 강제 퇴실
@@ -137,10 +137,10 @@ public class ReservationService {
                 favoriteService.sendFcmToStudent(student, seatId);
             } catch (IOException e) {
                 throw new RuntimeException(e);
-            }
-        }
-        return true;
-    }
+           }
+       }
+       return true;
+   }
 
     public void updateRemainingBreakTime(Student student) {
         Seat seat = seatRepository.findBySeatId(student.getSeatId());
